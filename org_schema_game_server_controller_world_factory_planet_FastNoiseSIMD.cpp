@@ -1,5 +1,5 @@
 #include "org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h"
-#include "FastNoiseSIMD.h"
+#include "FastNoiseSIMD/FastNoiseSIMD.h"
 
 #define L2P(l) reinterpret_cast<FastNoiseSIMD*>(l)
 

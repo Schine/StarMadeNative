@@ -1,25 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="FastNoiseSIMD">
-      <UniqueIdentifier>{11449dc9-7460-4850-bc0c-1282c2be7fb5}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="FastNoiseSIMD.cpp">
-      <Filter>FastNoiseSIMD</Filter>
-    </ClCompile>
-    <ClCompile Include="FastNoiseSIMD_internal.cpp">
-      <Filter>FastNoiseSIMD</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp" />
+    <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD.cpp">
+      <Filter>FastNoiseSIMD</Filter>
+    </ClCompile>
+    <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD_internal.cpp">
+      <Filter>FastNoiseSIMD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FastNoiseSIMD.h">
+    <ClInclude Include="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h" />
+    <ClInclude Include="FastNoiseSIMD\FastNoiseSIMD.h">
       <Filter>FastNoiseSIMD</Filter>
     </ClInclude>
-    <ClInclude Include="FastNoiseSIMD_internal.h">
+    <ClInclude Include="FastNoiseSIMD\FastNoiseSIMD_internal.h">
       <Filter>FastNoiseSIMD</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="FastNoiseSIMD">
+      <UniqueIdentifier>{c61dc591-a617-432f-a197-4f3248ef243f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

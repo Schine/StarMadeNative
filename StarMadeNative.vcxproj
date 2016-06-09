@@ -19,18 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FastNoiseSIMD.h" />
-    <ClInclude Include="FastNoiseSIMD_internal.h" />
+    <ClInclude Include="FastNoiseSIMD\FastNoiseSIMD.h" />
+    <ClInclude Include="FastNoiseSIMD\FastNoiseSIMD_internal.h" />
     <ClInclude Include="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FastNoiseSIMD.cpp" />
-    <ClCompile Include="FastNoiseSIMD_internal.cpp">
-      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-    </ClCompile>
+    <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD.cpp" />
+    <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD_internal.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
