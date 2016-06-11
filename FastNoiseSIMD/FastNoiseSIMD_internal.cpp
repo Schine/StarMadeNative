@@ -34,7 +34,10 @@
 
 #ifndef SIMD_LEVEL
 #define SIMD_LEVEL FN_AVX2
+#define SIMD_LEVEL_H FN_AVX2
+#include "FastNoiseSIMD_internal.h"
 #include <immintrin.h>
+
 #ifndef __AVX__
 #ifdef __GNUC__
 #error To compile AVX2 set custom build commands "$compiler $options $includes -c $file -o $object -march=core-avx2" on FastNoiseSIMD_internal.cpp, or remove "#define FN_COMPILE_AVX2" from FastNoiseSIMD.h
@@ -672,13 +675,11 @@ FILL_FRACTAL_SET(Simplex)
 
 static SIMDi FUNC(Hash)(const SIMDi& seed, const SIMDi& x, const SIMDi& y, const SIMDi& z)
 {
-	SIMDi hash;
+	SIMDi hash = seed;
 
-	hash = SIMDi_MUL(x, SIMDi_NUM(xPrime));
+	hash = SIMDi_ADD(SIMDi_MUL(x, SIMDi_NUM(xPrime)), hash);
 	hash = SIMDi_ADD(SIMDi_MUL(y, SIMDi_NUM(yPrime)), hash);
 	hash = SIMDi_ADD(SIMDi_MUL(z, SIMDi_NUM(zPrime)), hash);
-	hash = SIMDi_XOR(hash, seed);
-	hash = SIMDi_XOR(SIMDi_SHIFT_R(hash, 13), hash);
 
 	hash = SIMDi_MUL(SIMDi_ADD(SIMDi_MUL(SIMDi_MUL(hash, hash), SIMDi_NUM(60493)), SIMDi_NUM(19990303)), hash);
 	hash = SIMDi_XOR(SIMDi_SHIFT_R(hash, 13), hash);
@@ -689,12 +690,11 @@ static SIMDi FUNC(Hash)(const SIMDi& seed, const SIMDi& x, const SIMDi& y, const
 static SIMDf FUNC(ValCoord)(const SIMDi& seed, const SIMDi& x, const SIMDi& y, const SIMDi& z)
 {
 	// High bit hash
-	SIMDi hash;
+	SIMDi hash = seed;
 
-	hash = SIMDi_MUL(x, SIMDi_NUM(xPrime));
+	hash = SIMDi_ADD(SIMDi_MUL(x, SIMDi_NUM(xPrime)), hash);
 	hash = SIMDi_ADD(SIMDi_MUL(y, SIMDi_NUM(yPrime)), hash);
 	hash = SIMDi_ADD(SIMDi_MUL(z, SIMDi_NUM(zPrime)), hash);
-	hash = SIMDi_XOR(hash, seed);
 	hash = SIMDi_XOR(SIMDi_SHIFT_R(hash, 13), hash);
 
 	hash = SIMDi_AND(SIMDi_MUL(SIMDi_ADD(SIMDi_MUL(SIMDi_MUL(hash, hash), SIMDi_NUM(60493)), SIMDi_NUM(19990303)), hash), SIMDi_NUM(0x7fffffff));
