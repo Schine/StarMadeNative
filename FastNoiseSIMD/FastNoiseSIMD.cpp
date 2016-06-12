@@ -45,8 +45,11 @@
 
 // Intrisic headers retroactively include others
 //#include <immintrin.h> //AVX FN_AVX2 FMA3
+#if defined(FN_COMPILE_SSE41) && !defined(__clang__)
 #include <smmintrin.h> //SSE4.1
-//#include <emmintrin.h> //SSE2
+#elif defined(FN_COMPILE_SSE2)
+#include <emmintrin.h> //SSE2
+#endif
 #include <math.h>
 
 // CPUid
@@ -75,8 +78,8 @@
 #include "FastNoiseSIMD_internal.cpp"
 #endif
 
-#ifdef FN_COMPILE_SSE41
-#define SIMD_LEVEL FN_SSE41
+#if defined(FN_COMPILE_SSE41) && !defined(__clang__)
+#define SIMD_LEVEL FN_SSE41 
 #include "FastNoiseSIMD_internal.cpp"
 #endif
 

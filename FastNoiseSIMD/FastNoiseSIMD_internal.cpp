@@ -35,8 +35,9 @@
 #ifndef SIMD_LEVEL
 #define SIMD_LEVEL FN_AVX2
 #define SIMD_LEVEL_H FN_AVX2
-#include "FastNoiseSIMD_internal.h"
 #include <immintrin.h>
+#include "FastNoiseSIMD_internal.h"
+
 
 #ifndef __AVX__
 #ifdef __GNUC__
