@@ -40,7 +40,7 @@
 
 // Using aligned sets of memory for float arrays allows faster storing of SIMD data
 // Comment out to allow unaligned float arrays to be used as sets
-#define FN_ALIGNED_SETS
+// #define FN_ALIGNED_SETS
 
 /*
 Tested Compilers:
