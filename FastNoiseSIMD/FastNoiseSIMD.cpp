@@ -43,6 +43,11 @@
 #include "FastNoiseSIMD_internal.h"
 #endif
 
+#ifdef FN_COMPILE_AVX2
+#define SIMD_LEVEL_H FN_AVX2
+#include "FastNoiseSIMD_internal.h"
+#endif
+
 // Intrisic headers retroactively include others
 //#include <immintrin.h> //AVX FN_AVX2 FMA3
 #if defined(FN_COMPILE_SSE41) && !defined(__clang__)
@@ -81,11 +86,6 @@
 #if defined(FN_COMPILE_SSE41) && !defined(__clang__)
 #define SIMD_LEVEL FN_SSE41 
 #include "FastNoiseSIMD_internal.cpp"
-#endif
-
-#ifdef FN_COMPILE_AVX2
-#define SIMD_LEVEL_H FN_AVX2
-#include "FastNoiseSIMD_internal.h"
 #endif
 
 // FN_AVX2 compiled directly through FastNoiseSIMD_internal.cpp to allow arch:AVX flag
