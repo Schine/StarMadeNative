@@ -77,7 +77,7 @@ public:
 	enum NoiseType { Value, ValueFractal, Gradient, GradientFractal, Simplex, SimplexFractal, WhiteNoise };
 	enum FractalType { FBM, Billow, RigidMulti };
 
-	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU 
+	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU
 	static FastNoiseSIMD* NewFastNoiseSIMD(int seed = 1337);
 
 	// Returns highest detected level of CPU support
@@ -147,6 +147,8 @@ public:
 	float* GetSimplexFractalSet(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float stepDistance = 1.0f);
 	virtual void FillSimplexSet(float* noiseSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float stepDistance = 1.0f) = 0;
 	virtual void FillSimplexFractalSet(float* noiseSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float stepDistance = 1.0f) = 0;
+
+    virtual ~FastNoiseSIMD() {}
 
 protected:
 	int m_seed = 0;

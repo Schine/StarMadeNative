@@ -27,7 +27,7 @@
 //
 
 #ifndef SIMD_LEVEL_H
-#error Don't include this file without defining SIMD_LEVEL_H
+#error "Don't include this file without defining SIMD_LEVEL_H"
 #else
 namespace FastNoiseSIMD_internal
 {
