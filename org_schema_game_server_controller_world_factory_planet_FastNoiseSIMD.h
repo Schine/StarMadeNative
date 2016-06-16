@@ -108,6 +108,11 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeFillNoiseSet
   (JNIEnv *, jclass, jlong, jfloatArray, jint, jint, jint, jint, jint, jint);
 
+#ifdef _WIN32
+#include <windows.h>
+_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+#endif
+
 #ifdef __cplusplus
 }
 #endif
