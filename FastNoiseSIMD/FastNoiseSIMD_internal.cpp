@@ -154,6 +154,7 @@ static SIMDi SIMDi_NUM(0xffffffff);
 #define SIMDf_SUB(a,b) _mm256_sub_ps(a,b)
 #define SIMDf_MUL(a,b) _mm256_mul_ps(a,b)
 #define SIMDf_DIV(a,b) _mm256_div_ps(a,b)
+#define SIMDf_XOR(a,b) _mm256_xor_ps(a,b)
 
 #define SIMDf_LESS_THAN(a,b) _mm256_cmp_ps(a,b,_CMP_LT_OQ)
 #define SIMDf_GREATER_THAN(a,b) _mm256_cmp_ps(a,b,_CMP_GT_OQ)
@@ -204,6 +205,7 @@ static SIMDi SIMDi_NUM(0xffffffff);
 #define SIMDf_GREATER_THAN(a,b) _mm_cmpgt_ps(a,b)
 #define SIMDf_LESS_EQUAL(a,b) _mm_cmple_ps(a,b)
 #define SIMDf_GREATER_EQUAL(a,b) _mm_cmpge_ps(a,b)
+#define SIMDf_XOR(a,b) _mm_xor_ps(a,b)
 
 #if SIMD_LEVEL == FN_SSE41
 #define SIMDi_MUL(a,b) _mm_mullo_epi32(a,b)
@@ -313,6 +315,7 @@ inline static float FUNC(CAST_TO_FLOAT)(int i) { return *reinterpret_cast<float*
 
 #define SIMDi_CONVERT_TO_INT(a) static_cast<int>(a)
 #define SIMDf_CONVERT_TO_FLOAT(a) static_cast<float>(a)
+#define SIMDf_XOR(a,b) SIMDf_CAST_TO_FLOAT(SIMDi_CAST_TO_INT(a) ^ SIMDi_CAST_TO_INT(b))
 #endif
 
 #define SIMDf_AND(a,b) SIMDf_CAST_TO_FLOAT(SIMDi_AND(SIMDi_CAST_TO_INT(a),SIMDi_CAST_TO_INT(b)))
@@ -722,7 +725,7 @@ static SIMDf FUNC(GradCoord)(const SIMDi& seed, const SIMDi& xi, const SIMDi& yi
 	SIMDf h1 = SIMDf_CAST_TO_FLOAT(SIMDi_SHIFT_L(SIMDi_AND(hash, SIMDi_NUM(1)), 31));
 	SIMDf h2 = SIMDf_CAST_TO_FLOAT(SIMDi_SHIFT_L(SIMDi_AND(hash, SIMDi_NUM(2)), 30));
 	//then add them
-	return SIMDf_ADD(SIMDf_BLENDV(u, SIMDf_SUB(SIMDf_NUM(0), u), h1), SIMDf_BLENDV(v, SIMDf_SUB(SIMDf_NUM(0), v), h2));
+	return SIMDf_ADD(SIMDf_XOR(u, h1), SIMDf_XOR(v, h2));
 }
 
 static SIMDf FUNC(WhiteNoiseSingle)(const SIMDi& seed, const SIMDf& x, const SIMDf& y, const SIMDf& z)
