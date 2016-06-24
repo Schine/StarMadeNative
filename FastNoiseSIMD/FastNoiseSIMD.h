@@ -78,7 +78,7 @@ public:
 	enum NoiseType { Value, ValueFractal, Gradient, GradientFractal, Simplex, SimplexFractal, WhiteNoise };
 	enum FractalType { FBM, Billow, RigidMulti };
 
-	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU 
+	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU
 	static FastNoiseSIMD* NewFastNoiseSIMD(int seed = 1337);
 
 	// Returns highest detected level of CPU support

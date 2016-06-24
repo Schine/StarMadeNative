@@ -54,10 +54,17 @@
 		</Linker>
 		<Unit filename="FastNoiseSIMD/FastNoiseSIMD.cpp" />
 		<Unit filename="FastNoiseSIMD/FastNoiseSIMD.h" />
-		<Unit filename="FastNoiseSIMD/FastNoiseSIMD_internal.cpp">
+		<Unit filename="FastNoiseSIMD/FastNoiseSIMD_avx2.cpp">
 			<Option compiler="gcc" use="1" buildCommand="$compiler $options $includes -c $file -o $object -march=core-avx2" />
 		</Unit>
+		<Unit filename="FastNoiseSIMD/FastNoiseSIMD_internal.cpp" />
 		<Unit filename="FastNoiseSIMD/FastNoiseSIMD_internal.h" />
+		<Unit filename="FastNoiseSIMD/FastNoiseSIMD_sse2.cpp">
+			<Option compiler="gcc" use="1" buildCommand="$compiler $options $includes -c $file -o $object -msse2" />
+		</Unit>
+		<Unit filename="FastNoiseSIMD/FastNoiseSIMD_sse41.cpp">
+			<Option compiler="gcc" use="1" buildCommand="$compiler $options $includes -c $file -o $object -msse4.1" />
+		</Unit>
 		<Unit filename="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp" />
 		<Unit filename="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h" />
 		<Extensions>

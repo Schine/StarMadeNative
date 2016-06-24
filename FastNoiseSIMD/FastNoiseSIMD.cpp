@@ -106,7 +106,7 @@ int GetFastestSIMD()
 
 	if (osAVXSuport && cpuAVXSuport)
 	{
-		__int64 xcrFeatureMask = xgetbv(_XCR_XFEATURE_ENABLED_MASK);
+		unsigned long long xcrFeatureMask = xgetbv(_XCR_XFEATURE_ENABLED_MASK);
 		if ((xcrFeatureMask & 0x6) != 0x6)
 			return FN_SSE41;
 	}
