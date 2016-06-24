@@ -9,6 +9,15 @@
     <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD_internal.cpp">
       <Filter>FastNoiseSIMD</Filter>
     </ClCompile>
+    <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD_avx2.cpp">
+      <Filter>FastNoiseSIMD</Filter>
+    </ClCompile>
+    <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD_sse2.cpp">
+      <Filter>FastNoiseSIMD</Filter>
+    </ClCompile>
+    <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD_sse41.cpp">
+      <Filter>FastNoiseSIMD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h" />

@@ -3,9 +3,14 @@
 
 #define L2P(l) reinterpret_cast<FastNoiseSIMD*>(l)
 
-JNIEXPORT jint JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_SIMDLevel(JNIEnv*, jclass)
+JNIEXPORT jint JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_GetSIMDLevel(JNIEnv*, jclass)
 {
 	return FastNoiseSIMD::GetSIMDLevel();
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_SetSIMDLevel(JNIEnv*, jclass, jint level)
+{
+	FastNoiseSIMD::SetSIMDLevel(level);
 }
 
 JNIEXPORT jlong JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NewFastNoiseSIMD(JNIEnv*, jclass, jint seed)
@@ -38,6 +43,11 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 	L2P(p)->SetNoiseType(static_cast<FastNoiseSIMD::NoiseType>(noiseType));
 }
 
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetAxisScales(JNIEnv*, jclass, jlong p, jfloat xScale, jfloat yScale, jfloat zScale)
+{
+	L2P(p)->SetAxisScales(xScale, yScale, zScale);
+}
+
 JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetFractalOctaves(JNIEnv*, jclass, jlong p, jint octaves)
 {
 	L2P(p)->SetFractalOctaves(static_cast<unsigned int>(octaves));
@@ -63,6 +73,15 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 	float* arrayP = static_cast<float*>(jEnv->GetFloatArrayElements(noiseSet, nullptr));
 
 	L2P(p)->FillNoiseSet(arrayP, xStart, yStart, zStart, xSize, ySize, zSize);
+
+	jEnv->ReleaseFloatArrayElements(noiseSet, arrayP, 0);
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeFillSampledNoiseSet(JNIEnv* jEnv, jclass, jlong p, jfloatArray noiseSet, jint xStart, jint yStart, jint zStart, jint xSize, jint ySize, jint zSize, jint sampleScale)
+{
+	float* arrayP = static_cast<float*>(jEnv->GetFloatArrayElements(noiseSet, nullptr));
+
+	L2P(p)->FillSampledNoiseSet(arrayP, xStart, yStart, zStart, xSize, ySize, zSize, sampleScale);
 
 	jEnv->ReleaseFloatArrayElements(noiseSet, arrayP, 0);
 }

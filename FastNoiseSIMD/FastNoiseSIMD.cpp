@@ -48,15 +48,6 @@
 #include "FastNoiseSIMD_internal.h"
 #endif
 
-// Intrisic headers retroactively include others
-//#include <immintrin.h> //AVX FN_AVX2 FMA3
-#if defined(FN_COMPILE_SSE41) && !defined(__clang__)
-#include <smmintrin.h> //SSE4.1
-#elif defined(FN_COMPILE_SSE2)
-#include <emmintrin.h> //SSE2
-#endif
-#include <math.h>
-
 // CPUid
 #ifdef _WIN32
 #include <algorithm>
@@ -65,30 +56,6 @@
 #include <cpuid.h>
 #include "inttypes.h"
 #endif
-
-// Macro redefinition warning
-#ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#endif
-// Cannot disable in GCC unfortunately
-
-// Compile once for each instruction set
-#ifdef FN_COMPILE_NO_SIMD_FALLBACK
-#define SIMD_LEVEL FN_NO_SIMD_FALLBACK
-#include "FastNoiseSIMD_internal.cpp"
-#endif
-
-#ifdef FN_COMPILE_SSE2
-#define SIMD_LEVEL FN_SSE2
-#include "FastNoiseSIMD_internal.cpp"
-#endif
-
-#if defined(FN_COMPILE_SSE41) && !defined(__clang__)
-#define SIMD_LEVEL FN_SSE41 
-#include "FastNoiseSIMD_internal.cpp"
-#endif
-
-// FN_AVX2 compiled directly through FastNoiseSIMD_internal.cpp to allow arch:AVX flag
 
 int FastNoiseSIMD::s_currentSIMDLevel = -1;
 
@@ -111,10 +78,9 @@ uint64_t xgetbv(unsigned int index){
 #define _XCR_XFEATURE_ENABLED_MASK  0
 #endif
 
-
 int GetFastestSIMD()
 {
-	// https://github.com/Mysticial/FeatureDetector
+	//https://github.com/Mysticial/FeatureDetector
 
 	int cpuInfo[4];
 
@@ -126,36 +92,36 @@ int GetFastestSIMD()
 
 	cpuid(cpuInfo, 0x00000001);
 
-	// FN_SSE2
+	// SSE2
 	if ((cpuInfo[3] & 1 << 26) == 0)
 		return FN_NO_SIMD_FALLBACK;
 
-	// FN_SSE41
+	// SSE41
 	if ((cpuInfo[2] & 1 << 19) == 0)
 		return FN_SSE2;
 
 	// AVX
-	bool osAVXSuport = (cpuInfo[2] & 1 << 27) != 0;
-	bool cpuAVXSuport = (cpuInfo[2] & 1 << 28) != 0;
+	bool osAVXSuport = cpuInfo[2] & 1 << 27;
+	bool cpuAVXSuport = cpuInfo[2] & 1 << 28;
 
 	if (osAVXSuport && cpuAVXSuport)
 	{
-		unsigned long long xcrFeatureMask = xgetbv(_XCR_XFEATURE_ENABLED_MASK);
+		__int64 xcrFeatureMask = xgetbv(_XCR_XFEATURE_ENABLED_MASK);
 		if ((xcrFeatureMask & 0x6) != 0x6)
 			return FN_SSE41;
 	}
 	else
 		return FN_SSE41;
 
-	// FN_AVX2 FMA3
+	// AVX2 FMA3
 	if (nIds < 0x00000007)
 		return FN_SSE41;
 
-	bool cpuFMA3Support = (cpuInfo[2] & 1 << 12) != 0;
+	bool cpuFMA3Support = cpuInfo[2] & 1 << 12;
 
 	cpuid(cpuInfo, 0x00000007);
 
-	bool cpuAVX2Support = (cpuInfo[1] & 1 << 5) != 0;
+	bool cpuAVX2Support = cpuInfo[1] & 1 << 5;
 
 	if (cpuFMA3Support && cpuAVX2Support)
 		return FN_AVX2;
@@ -205,53 +171,62 @@ void FastNoiseSIMD::FreeNoiseSet(float* floatArray)
 		delete[] floatArray;
 }
 
-float* FastNoiseSIMD::GetNoiseSet(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float stepDistance)
+float* FastNoiseSIMD::GetNoiseSet(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier)
 {
-	float* floatSet = GetEmptySet(xSize, ySize, zSize);
+	float* noiseSet = GetEmptySet(xSize, ySize, zSize);
 
-	FillNoiseSet(floatSet, xStart,  yStart,  zStart,  xSize,  ySize,  zSize, stepDistance);
+	FillNoiseSet(noiseSet, xStart,  yStart,  zStart,  xSize,  ySize,  zSize, scaleModifier);
 
-	return floatSet;
+	return noiseSet;
 }
 
-void FastNoiseSIMD::FillNoiseSet(float* floatSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float stepDistance)
+void FastNoiseSIMD::FillNoiseSet(float* noiseSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier)
 {
 	switch (m_noiseType)
 	{
 	case Value:
-		FillValueSet(floatSet, xStart, yStart, zStart, xSize, ySize, zSize, stepDistance);
+		FillValueSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);
 		break;
 	case ValueFractal:
-		FillValueFractalSet(floatSet, xStart, yStart, zStart, xSize, ySize, zSize, stepDistance);
+		FillValueFractalSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);
 		break;
 	case Gradient:
-		FillGradientSet(floatSet, xStart, yStart, zStart, xSize, ySize, zSize, stepDistance);
+		FillGradientSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);
 		break;
 	case GradientFractal:
-		FillGradientFractalSet(floatSet, xStart, yStart, zStart, xSize, ySize, zSize, stepDistance);
+		FillGradientFractalSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);
 		break;
 	case Simplex:
-		FillSimplexSet(floatSet, xStart, yStart, zStart, xSize, ySize, zSize, stepDistance);
+		FillSimplexSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);
 		break;
 	case SimplexFractal:
-		FillSimplexFractalSet(floatSet, xStart, yStart, zStart, xSize, ySize, zSize, stepDistance);
+		FillSimplexFractalSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);
 		break;
 	case WhiteNoise:
-		FillWhiteNoiseSet(floatSet, xStart, yStart, zStart, xSize, ySize, zSize, stepDistance);
+		FillWhiteNoiseSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);
 		break;
 	default:
 		break;
 	}
 }
 
+float* FastNoiseSIMD::GetSampledNoiseSet(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, int sampleScale)
+{
+	float* noiseSet = GetEmptySet(xSize, ySize, zSize);
+
+	FillSampledNoiseSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, sampleScale);
+
+	return noiseSet;
+}
+
 #define GET_SET(f) \
-float* FastNoiseSIMD::Get##f##Set(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float stepDistance)\
+float* FastNoiseSIMD::Get##f##Set(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier)\
 {\
-	float* floatSet = GetEmptySet(xSize, ySize, zSize);\
+	float* noiseSet = GetEmptySet(xSize, ySize, zSize);\
 	\
-	Fill##f##Set(floatSet, xStart, yStart, zStart, xSize, ySize, zSize, stepDistance);\
+	Fill##f##Set(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);\
 	\
-	return floatSet;\
+	return noiseSet;\
 }
 
 GET_SET(WhiteNoise)

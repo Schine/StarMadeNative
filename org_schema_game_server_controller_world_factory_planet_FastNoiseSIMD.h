@@ -22,11 +22,19 @@ JNIEXPORT jlong JNICALL Java_org_schema_game_server_controller_world_factory_pla
 
 /*
  * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
- * Method:    SIMDLevel
+ * Method:    GetSIMDLevel
+ * Signature: (I)V
+ */
+JNIEXPORT jint JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_GetSIMDLevel
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
+ * Method:    SetSIMDLevel
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_SIMDLevel
-  (JNIEnv *, jclass);
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_SetSIMDLevel
+  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
@@ -70,6 +78,14 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 
 /*
  * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
+ * Method:    NativeSetAxisScales
+ * Signature: (JFFF)V
+ */
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetAxisScales
+  (JNIEnv *, jclass, jlong, jfloat, jfloat, jfloat);
+
+/*
+ * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
  * Method:    NativeSetFractalOctaves
  * Signature: (JI)V
  */
@@ -108,10 +124,13 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeFillNoiseSet
   (JNIEnv *, jclass, jlong, jfloatArray, jint, jint, jint, jint, jint, jint);
 
-#ifdef _WIN32
-#include <windows.h>
-_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
-#endif
+/*
+ * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
+ * Method:    NativeFillSampledNoiseSet
+ * Signature: (J[FIIIIIII)V
+ */
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeFillSampledNoiseSet
+  (JNIEnv *, jclass, jlong, jfloatArray, jint, jint, jint, jint, jint, jint, jint);
 
 #ifdef __cplusplus
 }
