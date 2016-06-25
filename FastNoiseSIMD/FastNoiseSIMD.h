@@ -35,7 +35,8 @@
 #define FN_COMPILE_SSE41
 
 // To compile AVX2 set C++ code generation to use /arch:AVX(2) on FastNoiseSIMD_avx2.cpp
-#if !defined(__GLIBC_MINOR__) || __GLIBC_MINOR__ >= 14
+#if __GLIBC_MINOR__ < 14
+#else
 #define FN_COMPILE_AVX2
 #endif
 // Note: This does not break support for pre AVX CPUs, AVX code is only run if support is detected
@@ -44,7 +45,7 @@
 // Comment out to allow unaligned float arrays to be used as sets
 //#define FN_ALIGNED_SETS
 
-// Using FMA3 instructions with AVX2 provides a small performance increase but can cause 
+// Using FMA3 instructions with AVX2 provides a small performance increase but can cause
 // tiny variations in noise output compared to other SIMD levels due to higher calculation precision
 #define FN_USE_FMA3
 
@@ -93,7 +94,7 @@ public:
 	enum CellularDistanceFunction { Euclidean, Manhattan, Natural };
 	enum CellularReturnType { CellValue, Distance, Distance2, Distance2Add, Distance2Sub, Distance2Mul, Distance2Div };
 
-	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU 
+	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU
 	static FastNoiseSIMD* NewFastNoiseSIMD(int seed = 1337);
 
 	// Returns highest detected level of CPU support
