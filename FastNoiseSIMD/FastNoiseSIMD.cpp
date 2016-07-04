@@ -27,6 +27,7 @@
 //
 
 #include "FastNoiseSIMD.h"
+#include <assert.h>
 
 #ifdef FN_COMPILE_NO_SIMD_FALLBACK
 #define SIMD_LEVEL_H FN_NO_SIMD_FALLBACK
@@ -101,12 +102,12 @@ int GetFastestSIMD()
 		return FN_SSE2;
 
 	// AVX
-	bool osAVXSuport = cpuInfo[2] & 1 << 27;
-	bool cpuAVXSuport = cpuInfo[2] & 1 << 28;
+	bool osAVXSuport = (cpuInfo[2] & 1 << 27) != 0;
+	bool cpuAVXSuport = (cpuInfo[2] & 1 << 28) != 0;
 
 	if (osAVXSuport && cpuAVXSuport)
 	{
-		unsigned long long xcrFeatureMask = xgetbv(_XCR_XFEATURE_ENABLED_MASK);
+		__int64 xcrFeatureMask = xgetbv(_XCR_XFEATURE_ENABLED_MASK);
 		if ((xcrFeatureMask & 0x6) != 0x6)
 			return FN_SSE41;
 	}
@@ -117,11 +118,11 @@ int GetFastestSIMD()
 	if (nIds < 0x00000007)
 		return FN_SSE41;
 
-	bool cpuFMA3Support = cpuInfo[2] & 1 << 12;
+	bool cpuFMA3Support = (cpuInfo[2] & 1 << 12) != 0;
 
 	cpuid(cpuInfo, 0x00000007);
 
-	bool cpuAVX2Support = cpuInfo[1] & 1 << 5;
+	bool cpuAVX2Support = (cpuInfo[1] & 1 << 5) != 0;
 
 	if (cpuFMA3Support && cpuAVX2Support)
 		return FN_AVX2;
@@ -132,8 +133,7 @@ int GetFastestSIMD()
 
 FastNoiseSIMD* FastNoiseSIMD::NewFastNoiseSIMD(int seed)
 {
-	if (s_currentSIMDLevel < 0)
-		s_currentSIMDLevel = GetFastestSIMD();
+	GetSIMDLevel();
 
 #ifdef FN_COMPILE_AVX2
 	if (s_currentSIMDLevel >= FN_AVX2)
@@ -157,8 +157,18 @@ FastNoiseSIMD* FastNoiseSIMD::NewFastNoiseSIMD(int seed)
 #endif
 }
 
+int FastNoiseSIMD::GetSIMDLevel()
+{
+	if (s_currentSIMDLevel < 0)
+		s_currentSIMDLevel = GetFastestSIMD();
+
+	return s_currentSIMDLevel;
+}
+
 void FastNoiseSIMD::FreeNoiseSet(float* floatArray)
 {
+	GetSIMDLevel();
+
 #ifdef FN_ALIGNED_SETS
 	if (s_currentSIMDLevel > FN_NO_SIMD_FALLBACK)
         #ifdef _WIN32
@@ -169,6 +179,121 @@ void FastNoiseSIMD::FreeNoiseSet(float* floatArray)
 	else
 #endif
 		delete[] floatArray;
+}
+
+float* FastNoiseSIMD::GetEmptySet(int size)
+{
+	GetSIMDLevel();
+
+#ifdef FN_COMPILE_AVX2
+	if (s_currentSIMDLevel >= FN_AVX2)
+		return FastNoiseSIMD_internal::FASTNOISE_SIMD_CLASS(FN_AVX2)::GetEmptySet(size);
+#endif
+
+#ifdef FN_COMPILE_SSE41
+	if (s_currentSIMDLevel >= FN_SSE41)
+		return FastNoiseSIMD_internal::FASTNOISE_SIMD_CLASS(FN_SSE41)::GetEmptySet(size);
+#endif
+
+#ifdef FN_COMPILE_SSE2
+	if (s_currentSIMDLevel >= FN_SSE2)
+		return FastNoiseSIMD_internal::FASTNOISE_SIMD_CLASS(FN_SSE2)::GetEmptySet(size);
+#endif
+
+#ifdef FN_COMPILE_NO_SIMD_FALLBACK
+	return FastNoiseSIMD_internal::FASTNOISE_SIMD_CLASS(FN_NO_SIMD_FALLBACK)::GetEmptySet(size);
+#else
+	return nullptr;
+#endif
+}
+
+FastNoiseVectorSet* FastNoiseSIMD::GetVectorSet(int xSize, int ySize, int zSize)
+{
+	FastNoiseVectorSet* vectorSet = new FastNoiseVectorSet();
+	FillVectorSet(vectorSet, xSize, ySize, zSize);
+	return vectorSet;
+}
+
+void FastNoiseSIMD::FillVectorSet(FastNoiseVectorSet* vectorSet, int xSize, int ySize, int zSize)
+{
+	assert(vectorSet);
+
+	vectorSet->SetSize(xSize*ySize*zSize);
+	vectorSet->sampleScale = 0;
+
+	int index = 0;
+
+	for (int ix = 0; ix < xSize; ix++)
+	{
+		for (int iy = 0; iy < ySize; iy++)
+		{
+			for (int iz = 0; iz < zSize; iz++)
+			{
+				vectorSet->xSet[index] = float(ix);
+				vectorSet->ySet[index] = float(iy);
+				vectorSet->zSet[index] = float(iz);
+				index++;
+			}
+		}
+	}	
+}
+
+FastNoiseVectorSet* FastNoiseSIMD::GetSamplingVectorSet(int sampleScale, int xSize, int ySize, int zSize)
+{
+	FastNoiseVectorSet* vectorSet = new FastNoiseVectorSet();
+	FillSamplingVectorSet(vectorSet, sampleScale, xSize, ySize, zSize);
+	return vectorSet;
+}
+
+void FastNoiseSIMD::FillSamplingVectorSet(FastNoiseVectorSet* vectorSet, int sampleScale, int xSize, int ySize, int zSize)
+{
+	assert(vectorSet);
+
+	if (sampleScale <= 0)
+	{
+		FillVectorSet(vectorSet, xSize, ySize, zSize);
+		return;
+	}
+
+	int sampleSize = 1 << sampleScale;
+	int sampleMask = sampleSize - 1;
+	float scaleModifier = float(sampleSize);
+
+	int xSizeSample = xSize;
+	int ySizeSample = ySize;
+	int zSizeSample = zSize;
+
+	if (xSizeSample & sampleMask)
+		xSizeSample = (xSizeSample & ~sampleMask) + sampleSize;
+
+	if (ySizeSample & sampleMask)
+		ySizeSample = (ySizeSample & ~sampleMask) + sampleSize;
+
+	if (zSizeSample & sampleMask)
+		zSizeSample = (zSizeSample & ~sampleMask) + sampleSize;
+
+	xSizeSample = (xSizeSample >> sampleScale) + 1;
+	ySizeSample = (ySizeSample >> sampleScale) + 1;
+	zSizeSample = (zSizeSample >> sampleScale) + 1;
+
+	vectorSet->SetSize(xSizeSample*ySizeSample*zSizeSample);
+	vectorSet->sampleScale = sampleScale;
+
+	int index = 0;
+
+	for (int ix = 0; ix < xSizeSample; ix++)
+	{
+		for (int iy = 0; iy < ySizeSample; iy++)
+		{
+			for (int iz = 0; iz < zSizeSample; iz++)
+			{
+				vectorSet->xSet[index] = float(ix*sampleSize);
+				vectorSet->ySet[index] = float(iy*sampleSize);
+				vectorSet->zSet[index] = float(iz*sampleSize);
+				index++;
+			}
+		}
+	}	
 }
 
 float* FastNoiseSIMD::GetNoiseSet(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier)
@@ -205,6 +330,42 @@ void FastNoiseSIMD::FillNoiseSet(float* noiseSet, int xStart, int yStart, int zS
 	case WhiteNoise:
 		FillWhiteNoiseSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);
 		break;
+	case Cellular:
+		FillCellularSet(noiseSet, xStart, yStart, zStart, xSize, ySize, zSize, scaleModifier);
+		break;
+	default:
+		break;
+	}
+}
+
+void FastNoiseSIMD::FillNoiseSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset, float yOffset, float zOffset)
+{
+	switch (m_noiseType)
+	{
+	case Value:
+		FillValueSet(noiseSet, vectorSet, xOffset, yOffset, zOffset);
+		break;
+	case ValueFractal:
+		FillValueFractalSet(noiseSet, vectorSet, xOffset, yOffset, zOffset);
+		break;
+	case Gradient:
+		FillGradientSet(noiseSet, vectorSet, xOffset, yOffset, zOffset);
+		break;
+	case GradientFractal:
+		FillGradientFractalSet(noiseSet, vectorSet, xOffset, yOffset, zOffset);
+		break;
+	case Simplex:
+		FillSimplexSet(noiseSet, vectorSet, xOffset, yOffset, zOffset);
+		break;
+	case SimplexFractal:
+		FillSimplexFractalSet(noiseSet, vectorSet, xOffset, yOffset, zOffset);
+		break;
+	case WhiteNoise:
+		FillWhiteNoiseSet(noiseSet, vectorSet, xOffset, yOffset, zOffset);
+		break;
+	case Cellular:
+		FillCellularSet(noiseSet, vectorSet, xOffset, yOffset, zOffset);
+		break;
 	default:
 		break;
 	}
@@ -239,3 +400,5 @@ GET_SET(GradientFractal)
 
 GET_SET(Simplex)
 GET_SET(SimplexFractal)
+
+GET_SET(Cellular)

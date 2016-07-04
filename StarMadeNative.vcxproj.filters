@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp" />
     <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD.cpp">
       <Filter>FastNoiseSIMD</Filter>
     </ClCompile>
@@ -18,15 +17,16 @@
     <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD_sse41.cpp">
       <Filter>FastNoiseSIMD</Filter>
     </ClCompile>
+    <ClCompile Include="FastNoiseSIMD_JNI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h" />
     <ClInclude Include="FastNoiseSIMD\FastNoiseSIMD.h">
       <Filter>FastNoiseSIMD</Filter>
     </ClInclude>
     <ClInclude Include="FastNoiseSIMD\FastNoiseSIMD_internal.h">
       <Filter>FastNoiseSIMD</Filter>
     </ClInclude>
+    <ClInclude Include="FastNoiseSIMD_JNI.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FastNoiseSIMD">

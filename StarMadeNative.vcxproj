@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClInclude Include="FastNoiseSIMD\FastNoiseSIMD.h" />
     <ClInclude Include="FastNoiseSIMD\FastNoiseSIMD_internal.h" />
-    <ClInclude Include="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h" />
+    <ClInclude Include="FastNoiseSIMD_JNI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FastNoiseSIMD\FastNoiseSIMD.cpp" />
@@ -49,7 +49,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp" />
+    <ClCompile Include="FastNoiseSIMD_JNI.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5BB5C05A-A256-418C-8805-8112F9B01E62}</ProjectGuid>
