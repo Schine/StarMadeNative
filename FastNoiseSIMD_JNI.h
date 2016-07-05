@@ -162,10 +162,10 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 /*
  * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
  * Method:    NewVectorSet
- * Signature: (I[F[F[F)J
+ * Signature: (I[F)J
  */
 JNIEXPORT jlong JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NewVectorSet
-  (JNIEnv *, jclass, jint, jfloatArray, jfloatArray, jfloatArray);
+  (JNIEnv *, jclass, jint, jfloatArray);
 
 /*
  * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD

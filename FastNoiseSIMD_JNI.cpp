@@ -1,5 +1,6 @@
 #include "FastNoiseSIMD_JNI.h"
 #include "FastNoiseSIMD/FastNoiseSIMD.h"
+#include <string.h>
 
 #define L_2_FNP(l) reinterpret_cast<FastNoiseSIMD*>(l)
 #define L_2_VSP(l) reinterpret_cast<FastNoiseVectorSet*>(l)
@@ -115,20 +116,29 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 	jEnv->ReleaseFloatArrayElements(noiseSet, arrayP, 0);
 }
 
-JNIEXPORT jlong JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NewVectorSet(JNIEnv* jEnv, jclass, jint samplingScale, jfloatArray xSet, jfloatArray ySet, jfloatArray zSet)
+JNIEXPORT jlong JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NewVectorSet(JNIEnv* jEnv, jclass, jint samplingScale, jfloatArray arraySet)
 {
 	FastNoiseVectorSet* vectorSet = new FastNoiseVectorSet();
 
-	vectorSet->size = static_cast<int>(jEnv->GetArrayLength(xSet));
+	int size = static_cast<int>(jEnv->GetArrayLength(arraySet));
+
+	float* data = jEnv->GetFloatArrayElements(arraySet, nullptr);
+
+	float* dataCopy = new float[size];
+	memcpy(dataCopy, data, size * sizeof(float));
+
+	jEnv->ReleaseFloatArrayElements(arraySet, data, JNI_ABORT);
+
+	vectorSet->size = size / 3;
 	vectorSet->sampleScale = static_cast<int>(samplingScale);
-	vectorSet->xSet = jEnv->GetFloatArrayElements(xSet, nullptr);
-	vectorSet->ySet = jEnv->GetFloatArrayElements(ySet, nullptr);
-	vectorSet->zSet = jEnv->GetFloatArrayElements(zSet, nullptr);
+	vectorSet->xSet = dataCopy;
+	vectorSet->ySet = vectorSet->xSet + vectorSet->size;
+	vectorSet->zSet = vectorSet->ySet + vectorSet->size;
 
 	return reinterpret_cast<jlong>(vectorSet);
 }
 
-JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_FreeVectorSet(JNIEnv*, jclass, jlong p)
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_FreeVectorSet(JNIEnv* jEnv, jclass, jlong p)
 {
 	delete L_2_VSP(p);
 }
