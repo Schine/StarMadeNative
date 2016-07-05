@@ -26,6 +26,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-m64" />
 				</Linker>
 			</Target>
 			<Target title="Release x86">
@@ -39,12 +40,14 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-m32" />
+					<Add option="-lstdc++" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++11" />
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add option="-fpic" />
 			<Add directory="../java/jdk1.8.0_92/include/linux" />
 			<Add directory="../java/jdk1.8.0_92/include" />
@@ -65,8 +68,8 @@
 		<Unit filename="FastNoiseSIMD/FastNoiseSIMD_sse41.cpp">
 			<Option compiler="gcc" use="1" buildCommand="$compiler $options $includes -c $file -o $object -msse4.1" />
 		</Unit>
-		<Unit filename="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp" />
-		<Unit filename="org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h" />
+		<Unit filename="FastNoiseSIMD_JNI.cpp" />
+		<Unit filename="FastNoiseSIMD_JNI.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

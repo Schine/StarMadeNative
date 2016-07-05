@@ -27,7 +27,7 @@
 //
 
 #include "FastNoiseSIMD.h"
-#include <assert.h> 
+#include <assert.h>
 
 #if defined(SIMD_LEVEL) || defined(FN_COMPILE_NO_SIMD_FALLBACK)
 
@@ -1389,8 +1389,6 @@ void SIMD_LEVEL_CLASS::FillCellularSet(float* noiseSet, FastNoiseVectorSet* vect
 
 	SIMDi seedV = SIMDi_SET(m_seed);
 	SIMDf freqV = SIMDf_SET(m_frequency);
-	SIMDf lacunarityV = SIMDf_SET(m_lacunarity);
-	SIMDf gainV = SIMDf_SET(m_gain);
 	SIMDf xOffsetV = SIMDf_SET(xOffset*m_frequency);
 	SIMDf yOffsetV = SIMDf_SET(yOffset*m_frequency);
 	SIMDf zOffsetV = SIMDf_SET(zOffset*m_frequency);
