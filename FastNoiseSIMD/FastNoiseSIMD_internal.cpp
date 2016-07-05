@@ -1487,16 +1487,21 @@ void SIMD_LEVEL_CLASS::FillSampledNoiseSet(float* noiseSet, int xStart, int ySta
 		for (int y = 0; y < ySizeSample - 1; y++)
 		{
 			SIMDi zSIMD = zBase;
+
+			SIMDf c001 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y, 0)]);
+			SIMDf c101 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y, 0)]);
+			SIMDf c011 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y + 1, 0)]);
+			SIMDf c111 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y + 1, 0)]);
 			for (int z = 0; z < zSizeSample - 1; z++)
 			{
-				SIMDf c000 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y, z)]);
-				SIMDf c100 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y, z)]);
-				SIMDf c010 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y + 1, z)]);
-				SIMDf c110 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y + 1, z)]);
-				SIMDf c001 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y, z + 1)]);
-				SIMDf c101 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y, z + 1)]);
-				SIMDf c011 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y + 1, z + 1)]);
-				SIMDf c111 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y + 1, z + 1)]);
+				SIMDf c000 = c001;
+				SIMDf c100 = c101;
+				SIMDf c010 = c011;
+				SIMDf c110 = c111;
+				c001 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y, z + 1)]);
+				c101 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y, z + 1)]);
+				c011 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y + 1, z + 1)]);
+				c111 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y + 1, z + 1)]);
 
 				SIMDi localCountSIMD = SIMDi_NUM(incremental);
 
@@ -1605,16 +1610,21 @@ void SIMD_LEVEL_CLASS::FillSampledNoiseSet(float* noiseSet, FastNoiseVectorSet* 
 		for (int y = 0; y < ySizeSample - 1; y++)
 		{
 			SIMDi zSIMD = SIMDi_SET_ZERO();
+
+			SIMDf c001 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y, 0)]);
+			SIMDf c101 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y, 0)]);
+			SIMDf c011 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y + 1, 0)]);
+			SIMDf c111 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y + 1, 0)]);
 			for (int z = 0; z < zSizeSample - 1; z++)
 			{
-				SIMDf c000 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y, z)]);
-				SIMDf c100 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y, z)]);
-				SIMDf c010 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y + 1, z)]);
-				SIMDf c110 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y + 1, z)]);
-				SIMDf c001 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y, z + 1)]);
-				SIMDf c101 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y, z + 1)]);
-				SIMDf c011 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y + 1, z + 1)]);
-				SIMDf c111 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y + 1, z + 1)]);
+				SIMDf c000 = c001;
+				SIMDf c100 = c101;
+				SIMDf c010 = c011;
+				SIMDf c110 = c111;
+				c001 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y, z + 1)]);
+				c101 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y, z + 1)]);
+				c011 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x, y + 1, z + 1)]);
+				c111 = SIMDf_SET(noiseSetSample[SAMPLE_INDEX(x + 1, y + 1, z + 1)]);
 
 				SIMDi localCountSIMD = SIMDi_NUM(incremental);
 
