@@ -27,7 +27,7 @@
 //
 
 #include "FastNoiseSIMD.h"
-#include <assert.h>
+#include <assert.h> 
 
 #if defined(SIMD_LEVEL) || defined(FN_COMPILE_NO_SIMD_FALLBACK)
 
@@ -125,10 +125,11 @@ static SIMDf SIMDf_NUM(1);
 
 #ifdef FN_ALIGNED_SETS
 #define SIMDf_STORE(p,a) _mm256_store_ps(p,a)
+#define SIMDf_LOAD(p) _mm256_load_ps(p)
 #else
 #define SIMDf_STORE(p,a) _mm256_storeu_ps(p,a)
+#define SIMDf_LOAD(p) _mm256_loadu_ps(p)
 #endif
-#define SIMDf_LOAD(p) _mm256_load_ps(p)
 
 #define SIMDf_ADD(a,b) _mm256_add_ps(a,b)
 #define SIMDf_SUB(a,b) _mm256_sub_ps(a,b)
@@ -178,10 +179,11 @@ static SIMDf SIMDf_NUM(1);
 
 #ifdef FN_ALIGNED_SETS
 #define SIMDf_STORE(p,a) _mm_store_ps(p,a)
+#define SIMDf_LOAD(p) _mm_load_ps(p)
 #else
 #define SIMDf_STORE(p,a) _mm_storeu_ps(p,a)
+#define SIMDf_LOAD(p) _mm_loadu_ps(p)
 #endif
-#define SIMDf_LOAD(p) _mm_load_ps(p)
 
 #define SIMDf_ADD(a,b) _mm_add_ps(a,b)
 #define SIMDf_SUB(a,b) _mm_sub_ps(a,b)
@@ -1441,9 +1443,9 @@ void SIMD_LEVEL_CLASS::FillSampledNoiseSet(float* noiseSet, int xStart, int ySta
 	int sampleMask = sampleSize - 1;
 	float scaleModifier = float(sampleSize);
 
-	int xOffset = sampleSize - (xStart & sampleMask) & sampleMask;
-	int yOffset = sampleSize - (yStart & sampleMask) & sampleMask;
-	int zOffset = sampleSize - (zStart & sampleMask) & sampleMask;
+	int xOffset = (sampleSize - (xStart & sampleMask)) & sampleMask;
+	int yOffset = (sampleSize - (yStart & sampleMask)) & sampleMask;
+	int zOffset = (sampleSize - (zStart & sampleMask)) & sampleMask;
 
 	int xSizeSample = xSize + xOffset;
 	int ySizeSample = ySize + yOffset;

@@ -44,7 +44,7 @@
 // Comment out to allow unaligned float arrays to be used as sets
 //#define FN_ALIGNED_SETS
 
-// Using FMA3 instructions with AVX2 provides a small performance increase but can cause
+// Using FMA3 instructions with AVX2 provides a small performance increase but can cause 
 // tiny variations in noise output compared to other SIMD levels due to higher calculation precision
 #define FN_USE_FMA3
 
@@ -93,7 +93,7 @@ public:
 	enum CellularDistanceFunction { Euclidean, Manhattan, Natural };
 	enum CellularReturnType { CellValue, Distance, Distance2, Distance2Add, Distance2Sub, Distance2Mul, Distance2Div };
 
-	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU
+	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU 
 	static FastNoiseSIMD* NewFastNoiseSIMD(int seed = 1337);
 
 	// Returns highest detected level of CPU support

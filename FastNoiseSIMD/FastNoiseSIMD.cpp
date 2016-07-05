@@ -430,5 +430,5 @@ void FastNoiseVectorSet::SetSize(int _size)
 
 	xSet = FastNoiseSIMD::GetEmptySet(alignedSize * 3);
 	ySet = xSet + alignedSize;
-	zSet = xSet + alignedSize * 2;
+	zSet = ySet + alignedSize;
 }
