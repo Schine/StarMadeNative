@@ -7,28 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B7E622071D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E622051D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp */; };
-		B7E622081D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h in Headers */ = {isa = PBXBuildFile; fileRef = B7E622061D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h */; };
-		B7E6220E1D0E033F005327D6 /* FastNoiseSIMD_internal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E6220A1D0E033F005327D6 /* FastNoiseSIMD_internal.cpp */; settings = {COMPILER_FLAGS = "-march=core-avx2"; }; };
+		B7E6220E1D0E033F005327D6 /* FastNoiseSIMD_internal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E6220A1D0E033F005327D6 /* FastNoiseSIMD_internal.cpp */; settings = {COMPILER_FLAGS = " "; }; };
 		B7E6220F1D0E033F005327D6 /* FastNoiseSIMD_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = B7E6220B1D0E033F005327D6 /* FastNoiseSIMD_internal.h */; };
 		B7E622101D0E033F005327D6 /* FastNoiseSIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E6220C1D0E033F005327D6 /* FastNoiseSIMD.cpp */; };
 		B7E622111D0E033F005327D6 /* FastNoiseSIMD.h in Headers */ = {isa = PBXBuildFile; fileRef = B7E6220D1D0E033F005327D6 /* FastNoiseSIMD.h */; };
 		B7E622311D0E2174005327D6 /* FastNoiseSIMD_sse41.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E622301D0E2174005327D6 /* FastNoiseSIMD_sse41.cpp */; settings = {COMPILER_FLAGS = "-msse4.1"; }; };
+		CEB506DF1D2C7FC700AD90CC /* FastNoiseSIMD_JNI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEB506DD1D2C7FC700AD90CC /* FastNoiseSIMD_JNI.cpp */; };
+		CEB506E01D2C7FC700AD90CC /* FastNoiseSIMD_JNI.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB506DE1D2C7FC700AD90CC /* FastNoiseSIMD_JNI.h */; };
+		CEB506E31D2C802400AD90CC /* FastNoiseSIMD_avx2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEB506E11D2C802400AD90CC /* FastNoiseSIMD_avx2.cpp */; settings = {COMPILER_FLAGS = "-march=core-avx2"; }; };
+		CEB506E41D2C802400AD90CC /* FastNoiseSIMD_sse2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEB506E21D2C802400AD90CC /* FastNoiseSIMD_sse2.cpp */; settings = {COMPILER_FLAGS = "-msse2"; }; };
+		CEB506E51D2C813D00AD90CC /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E622011D0E0093005327D6 /* JavaVM.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B7E621EA1D0DFFCD005327D6 /* StarMadeNative.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StarMadeNative.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7E621EA1D0DFFCD005327D6 /* StarMadeNative.dylib. */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StarMadeNative.dylib.; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7E621ED1D0DFFCD005327D6 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		B7E621FF1D0E0093005327D6 /* JavaFrameEmbedding.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaFrameEmbedding.framework; path = System/Library/Frameworks/JavaFrameEmbedding.framework; sourceTree = SDKROOT; };
 		B7E622001D0E0093005327D6 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		B7E622011D0E0093005327D6 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = System/Library/Frameworks/JavaVM.framework; sourceTree = SDKROOT; };
-		B7E622051D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp; sourceTree = "<group>"; };
-		B7E622061D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h; sourceTree = "<group>"; };
 		B7E6220A1D0E033F005327D6 /* FastNoiseSIMD_internal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FastNoiseSIMD_internal.cpp; path = FastNoiseSIMD/FastNoiseSIMD_internal.cpp; sourceTree = "<group>"; };
 		B7E6220B1D0E033F005327D6 /* FastNoiseSIMD_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FastNoiseSIMD_internal.h; path = FastNoiseSIMD/FastNoiseSIMD_internal.h; sourceTree = "<group>"; };
 		B7E6220C1D0E033F005327D6 /* FastNoiseSIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FastNoiseSIMD.cpp; path = FastNoiseSIMD/FastNoiseSIMD.cpp; sourceTree = "<group>"; };
 		B7E6220D1D0E033F005327D6 /* FastNoiseSIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FastNoiseSIMD.h; path = FastNoiseSIMD/FastNoiseSIMD.h; sourceTree = "<group>"; };
 		B7E622301D0E2174005327D6 /* FastNoiseSIMD_sse41.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FastNoiseSIMD_sse41.cpp; path = FastNoiseSIMD/FastNoiseSIMD_sse41.cpp; sourceTree = "<group>"; };
+		CEB506DD1D2C7FC700AD90CC /* FastNoiseSIMD_JNI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FastNoiseSIMD_JNI.cpp; sourceTree = "<group>"; };
+		CEB506DE1D2C7FC700AD90CC /* FastNoiseSIMD_JNI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastNoiseSIMD_JNI.h; sourceTree = "<group>"; };
+		CEB506E11D2C802400AD90CC /* FastNoiseSIMD_avx2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FastNoiseSIMD_avx2.cpp; path = FastNoiseSIMD/FastNoiseSIMD_avx2.cpp; sourceTree = "<group>"; };
+		CEB506E21D2C802400AD90CC /* FastNoiseSIMD_sse2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FastNoiseSIMD_sse2.cpp; path = FastNoiseSIMD/FastNoiseSIMD_sse2.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB506E51D2C813D00AD90CC /* JavaVM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,13 +51,15 @@
 		B7E621E11D0DFFCD005327D6 = {
 			isa = PBXGroup;
 			children = (
+				CEB506E11D2C802400AD90CC /* FastNoiseSIMD_avx2.cpp */,
+				CEB506E21D2C802400AD90CC /* FastNoiseSIMD_sse2.cpp */,
+				CEB506DD1D2C7FC700AD90CC /* FastNoiseSIMD_JNI.cpp */,
+				CEB506DE1D2C7FC700AD90CC /* FastNoiseSIMD_JNI.h */,
 				B7E622301D0E2174005327D6 /* FastNoiseSIMD_sse41.cpp */,
 				B7E6220A1D0E033F005327D6 /* FastNoiseSIMD_internal.cpp */,
 				B7E6220B1D0E033F005327D6 /* FastNoiseSIMD_internal.h */,
 				B7E6220C1D0E033F005327D6 /* FastNoiseSIMD.cpp */,
 				B7E6220D1D0E033F005327D6 /* FastNoiseSIMD.h */,
-				B7E622051D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp */,
-				B7E622061D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h */,
 				B7E621EC1D0DFFCD005327D6 /* Frameworks */,
 				B7E621EB1D0DFFCD005327D6 /* Products */,
 			);
@@ -60,7 +68,7 @@
 		B7E621EB1D0DFFCD005327D6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B7E621EA1D0DFFCD005327D6 /* StarMadeNative.bundle */,
+				B7E621EA1D0DFFCD005327D6 /* StarMadeNative.dylib. */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,8 +91,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB506E01D2C7FC700AD90CC /* FastNoiseSIMD_JNI.h in Headers */,
 				B7E622111D0E033F005327D6 /* FastNoiseSIMD.h in Headers */,
-				B7E622081D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.h in Headers */,
 				B7E6220F1D0E033F005327D6 /* FastNoiseSIMD_internal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,7 +114,7 @@
 			);
 			name = StarMadeNative;
 			productName = StarMadeNative;
-			productReference = B7E621EA1D0DFFCD005327D6 /* StarMadeNative.bundle */;
+			productReference = B7E621EA1D0DFFCD005327D6 /* StarMadeNative.dylib. */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -145,10 +153,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB506E41D2C802400AD90CC /* FastNoiseSIMD_sse2.cpp in Sources */,
+				CEB506E31D2C802400AD90CC /* FastNoiseSIMD_avx2.cpp in Sources */,
 				B7E622311D0E2174005327D6 /* FastNoiseSIMD_sse41.cpp in Sources */,
 				B7E622101D0E033F005327D6 /* FastNoiseSIMD.cpp in Sources */,
 				B7E6220E1D0E033F005327D6 /* FastNoiseSIMD_internal.cpp in Sources */,
-				B7E622071D0E00E5005327D6 /* org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD.cpp in Sources */,
+				CEB506DF1D2C7FC700AD90CC /* FastNoiseSIMD_JNI.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,12 +247,12 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
-				EXECUTABLE_EXTENSION = dylib;
+				EXECUTABLE_EXTENSION = "";
 				INFOPLIST_FILE = "";
 				LLVM_LTO = NO;
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "lib$(TARGET_NAME).dylib";
 				SDKROOT = macosx;
 				SYMROOT = builds;
 				WRAPPER_EXTENSION = "";
@@ -254,13 +264,13 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
-				EXECUTABLE_EXTENSION = dylib;
+				EXECUTABLE_EXTENSION = "";
 				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = "";
 				LLVM_LTO = NO;
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "lib$(TARGET_NAME).dylib";
 				SDKROOT = macosx;
 				SYMROOT = builds;
 				WRAPPER_EXTENSION = "";
