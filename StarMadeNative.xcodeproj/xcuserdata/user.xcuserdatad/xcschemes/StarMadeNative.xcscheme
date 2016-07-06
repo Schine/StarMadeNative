@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B7E621E91D0DFFCD005327D6"
-               BuildableName = "StarMadeNative."
+               BuildableName = "libStarMadeNative.dylib."
                BlueprintName = "StarMadeNative"
                ReferencedContainer = "container:StarMadeNative.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B7E621E91D0DFFCD005327D6"
-            BuildableName = "StarMadeNative."
+            BuildableName = "libStarMadeNative.dylib."
             BlueprintName = "StarMadeNative"
             ReferencedContainer = "container:StarMadeNative.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B7E621E91D0DFFCD005327D6"
-            BuildableName = "StarMadeNative."
+            BuildableName = "libStarMadeNative.dylib."
             BlueprintName = "StarMadeNative"
             ReferencedContainer = "container:StarMadeNative.xcodeproj">
          </BuildableReference>
