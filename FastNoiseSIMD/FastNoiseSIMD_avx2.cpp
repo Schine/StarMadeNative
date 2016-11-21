@@ -28,6 +28,8 @@
 
 #include "FastNoiseSIMD.h"
 
+// DISABLE WHOLE PROGRAM OPTIMIZATION for this file when using MSVC
+
 // To compile AVX2 support enable AVX(2) code generation compiler flags for this file
 #ifdef FN_COMPILE_AVX2
 #ifndef __AVX__

@@ -125,16 +125,16 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 	jEnv->ReleaseFloatArrayElements(noiseSet, arrayP, 0);
 }
 
-JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeFillSampledNoiseSetVector(JNIEnv* jEnv, jclass, jlong p, jfloatArray noiseSet, jlong pVS, jint xSize, jint ySize, jint zSize, jfloat xOffset, jfloat yOffset, jfloat zOffset)
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeFillSampledNoiseSetVector(JNIEnv* jEnv, jclass, jlong p, jfloatArray noiseSet, jlong pVS, jfloat xOffset, jfloat yOffset, jfloat zOffset)
 {
 	float* arrayP = static_cast<float*>(jEnv->GetFloatArrayElements(noiseSet, nullptr));
 
-	L_2_FNP(p)->FillSampledNoiseSet(arrayP, L_2_VSP(pVS), xSize, ySize, zSize, xOffset, yOffset, zOffset);
+	L_2_FNP(p)->FillSampledNoiseSet(arrayP, L_2_VSP(pVS), xOffset, yOffset, zOffset);
 
 	jEnv->ReleaseFloatArrayElements(noiseSet, arrayP, 0);
 }
 
-JNIEXPORT jlong JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NewVectorSet(JNIEnv* jEnv, jclass, jint samplingScale, jfloatArray arraySet)
+JNIEXPORT jlong JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NewVectorSet(JNIEnv* jEnv, jclass, jint samplingScale, jfloatArray arraySet, jint sampleSizeX, jint sampleSizeY, jint sampleSizeZ)
 {
 	FastNoiseVectorSet* vectorSet = new FastNoiseVectorSet();
 
@@ -149,6 +149,9 @@ JNIEXPORT jlong JNICALL Java_org_schema_game_server_controller_world_factory_pla
 
 	vectorSet->size = size / 3;
 	vectorSet->sampleScale = static_cast<int>(samplingScale);
+	vectorSet->sampleSizeX = sampleSizeX;
+	vectorSet->sampleSizeY = sampleSizeY;
+	vectorSet->sampleSizeZ = sampleSizeZ;
 	vectorSet->xSet = dataCopy;
 	vectorSet->ySet = vectorSet->xSet + vectorSet->size;
 	vectorSet->zSet = vectorSet->ySet + vectorSet->size;

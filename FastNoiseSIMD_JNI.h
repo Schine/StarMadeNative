@@ -176,18 +176,18 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 /*
  * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
  * Method:    NativeFillSampledNoiseSetVector
- * Signature: (J[FJIIIFFF)V
+ * Signature: (J[FJFFF)V
  */
 JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeFillSampledNoiseSetVector
-  (JNIEnv *, jclass, jlong, jfloatArray, jlong, jint, jint, jint, jfloat, jfloat, jfloat);
+  (JNIEnv *, jclass, jlong, jfloatArray, jlong, jfloat, jfloat, jfloat);
 
 /*
  * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
  * Method:    NewVectorSet
- * Signature: (I[F)J
+ * Signature: (I[FIII)J
  */
 JNIEXPORT jlong JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NewVectorSet
-  (JNIEnv *, jclass, jint, jfloatArray);
+  (JNIEnv *, jclass, jint, jfloatArray, jint, jint, jint);
 
 /*
  * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
