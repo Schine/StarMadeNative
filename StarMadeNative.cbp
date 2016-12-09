@@ -41,7 +41,6 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-m32" />
-					<Add option="-lstdc++" />
 				</Linker>
 			</Target>
 		</Build>
