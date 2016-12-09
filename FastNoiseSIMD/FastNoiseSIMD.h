@@ -34,7 +34,9 @@
 #define FN_COMPILE_SSE41
 
 // To compile AVX2 set C++ code generation to use /arch:AVX(2) on FastNoiseSIMD_avx2.cpp
+#if !defined(__GNUC__) || defined(__clang__) || (__GNUC__ > 4)
 #define FN_COMPILE_AVX2
+#endif
 // Note: This does not break support for pre AVX CPUs, AVX code is only run if support is detected
 
 // SSE2 support is guaranteed on 64bit CPUs so no fallback is not needed
