@@ -1,4 +1,4 @@
-// FastNoiseSIMD_sse2.cpp
+// FastNoiseSIMD_neon.cpp
 //
 // MIT License
 //
@@ -27,15 +27,12 @@
 //
 
 #include "FastNoiseSIMD.h"
+#ifdef FN_COMPILE_NEON
 
-// DISABLE WHOLE PROGRAM OPTIMIZATION for this file when using MSVC
-
-// Depending on the compiler this file may need to have SSE2 code generation compiler flags enabled
-#ifdef FN_COMPILE_SSE2
-#define SIMD_LEVEL_H FN_SSE2
+#define SIMD_LEVEL_H FN_NEON
 #include "FastNoiseSIMD_internal.h"
-#include <emmintrin.h> //SSE2
+#include <arm_neon.h>
 
-#define SIMD_LEVEL FN_SSE2
+#define SIMD_LEVEL FN_NEON
 #include "FastNoiseSIMD_internal.cpp"
 #endif

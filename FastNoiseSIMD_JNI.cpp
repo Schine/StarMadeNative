@@ -98,6 +98,46 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 	L_2_FNP(p)->SetCellularReturnType(static_cast<FastNoiseSIMD::CellularReturnType>(cellularReturnType));
 }
 
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetCellularNoiseLookupType(JNIEnv* jEnv, jclass, jlong p, jint noiseType)
+{
+	L_2_FNP(p)->SetCellularNoiseLookupType(static_cast<FastNoiseSIMD::NoiseType>(noiseType));
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetCellularNoiseLookupFrequency(JNIEnv* jEnv, jclass, jlong p, jfloat freq)
+{
+	L_2_FNP(p)->SetCellularNoiseLookupFrequency(freq);
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbType(JNIEnv* jEnv, jclass, jlong p, jint perturbType)
+{
+	L_2_FNP(p)->SetPerturbType(static_cast<FastNoiseSIMD::PerturbType>(perturbType));
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbFrequency(JNIEnv* jEnv, jclass, jlong p, jfloat perturbFreq)
+{
+	L_2_FNP(p)->SetPerturbFrequency(perturbFreq);
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbAmp(JNIEnv* jEnv, jclass, jlong p, jfloat perturbAmp)
+{
+	L_2_FNP(p)->SetPerturbAmp(perturbAmp);
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbFractalOctaves(JNIEnv* jEnv, jclass, jlong p, jint perturbOctaves)
+{
+	L_2_FNP(p)->SetPerturbFractalOctaves(perturbOctaves);
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbFractalLacunarity(JNIEnv* jEnv, jclass, jlong p, jfloat perturbFractalLacunarity)
+{
+	L_2_FNP(p)->SetPerturbFractalLacunarity(perturbFractalLacunarity);
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbFractalGain(JNIEnv* jEnv, jclass, jlong p, jfloat perturbFractalGain)
+{
+	L_2_FNP(p)->SetPerturbFractalGain(perturbFractalGain);
+}
+
 JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeFillNoiseSet(JNIEnv* jEnv, jclass, jlong p, jfloatArray noiseSet, jint xStart, jint yStart, jint zStart, jint xSize, jint ySize, jint zSize)
 {
 	float* arrayP = jEnv->GetFloatArrayElements(noiseSet, nullptr);

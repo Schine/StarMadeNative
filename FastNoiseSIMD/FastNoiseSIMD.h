@@ -2,7 +2,7 @@
 //
 // MIT License
 //
-// Copyright(c) 2016 Jordan Peck
+// Copyright(c) 2017 Jordan Peck
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files(the "Software"), to deal
@@ -30,27 +30,34 @@
 #define FASTNOISE_SIMD_H
 
 // Comment out lines to not compile for certain instruction sets
+#if defined(__arm__) || defined(__aarch64__)
+#define FN_ARM
+#define FN_IOS
+#define FN_COMPILE_NEON
+#else
+
 #define FN_COMPILE_SSE2
 #define FN_COMPILE_SSE41
 
 // To compile AVX2 set C++ code generation to use /arch:AVX(2) on FastNoiseSIMD_avx2.cpp
-#if !defined(__GNUC__) || defined(__clang__) || (__GNUC__ > 4)
 #define FN_COMPILE_AVX2
-#endif
 // Note: This does not break support for pre AVX CPUs, AVX code is only run if support is detected
-
-// SSE2 support is guaranteed on 64bit CPUs so no fallback is not needed
-#if !(defined(_WIN64) || defined(__x86_64__) || defined(__ppc64__))
-#define FN_COMPILE_NO_SIMD_FALLBACK
-#endif
 
 // Using aligned sets of memory for float arrays allows faster storing of SIMD data
 // Comment out to allow unaligned float arrays to be used as sets
 //#define FN_ALIGNED_SETS
+#endif
 
-// Using FMA3 instructions with AVX2 provides a small performance increase but can cause
+// SSE2/NEON support is guaranteed on 64bit CPUs so no fallback is needed
+#if !(defined(_WIN64) || defined(__x86_64__) || defined(__ppc64__) || defined(__aarch64__)) || defined(_DEBUG)
+#define FN_COMPILE_NO_SIMD_FALLBACK
+#endif
+
+// Using FMA instructions with AVX2/NEON provides a small performance increase but can cause 
 // minute variations in noise output compared to other SIMD levels due to higher calculation precision
-#define FN_USE_FMA3
+#ifndef __arm__
+#define FN_USE_FMA
+#endif
 
 // Reduced minimum of zSize from 8 to 4 when not using a vector set
 // Causes slightly performance loss on non-"mulitple of 8" zSize
@@ -91,16 +98,19 @@ struct FastNoiseVectorSet;
 class FastNoiseSIMD
 {
 public:
+
 	enum NoiseType { Value, ValueFractal, Perlin, PerlinFractal, Simplex, SimplexFractal, WhiteNoise, Cellular };
 	enum FractalType { FBM, Billow, RigidMulti };
+	enum PerturbType { None, Gradient, GradientFractal };
 
 	enum CellularDistanceFunction { Euclidean, Manhattan, Natural };
-	enum CellularReturnType { CellValue, Distance, Distance2, Distance2Add, Distance2Sub, Distance2Mul, Distance2Div };
+	enum CellularReturnType { CellValue, Distance, Distance2, Distance2Add, Distance2Sub, Distance2Mul, Distance2Div, NoiseLookup };
 
-	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU
+	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU 
 	static FastNoiseSIMD* NewFastNoiseSIMD(int seed = 1337);
 
 	// Returns highest detected level of CPU support
+	// 5: ARM NEON
 	// 3: AVX2 & FMA3
 	// 2: SSE4.1
 	// 1: SSE2
@@ -108,6 +118,7 @@ public:
 	static int GetSIMDLevel(void);
 
 	// Sets the SIMD level for newly created FastNoiseSIMD objects
+	// 5: ARM NEON
 	// 3: AVX2 & FMA3
 	// 2: SSE4.1
 	// 1: SSE2
@@ -151,7 +162,7 @@ public:
 
 	// Sets octave count for all fractal noise types
 	// Default: 3
-	void SetFractalOctaves(int octaves) { m_octaves = octaves; }
+	void SetFractalOctaves(int octaves) { m_octaves = octaves; m_fractalBounding = CalculateFractalBounding(m_octaves, m_gain);	}
 
 	// Sets octave lacunarity for all fractal noise types
 	// Default: 2.0
@@ -159,7 +170,7 @@ public:
 
 	// Sets octave gain for all fractal noise types
 	// Default: 0.5
-	void SetFractalGain(float gain) { m_gain = gain; }
+	void SetFractalGain(float gain) { m_gain = gain; m_fractalBounding = CalculateFractalBounding(m_octaves, m_gain); }
 
 	// Sets method for combining octaves in all fractal noise types
 	// Default: FBM
@@ -173,6 +184,40 @@ public:
 	// Sets distance function used in cellular noise calculations
 	// Default: Euclidean
 	void SetCellularDistanceFunction(CellularDistanceFunction cellularDistanceFunction) { m_cellularDistanceFunction = cellularDistanceFunction; }
+
+	// Sets the type of noise used if cellular return type is set the NoiseLookup
+	// Default: Simplex
+	void SetCellularNoiseLookupType(NoiseType cellularNoiseLookupType) { m_cellularNoiseLookupType = cellularNoiseLookupType; }
+
+	// Sets relative frequency on the cellular noise lookup return type
+	// Default: 0.2
+	void SetCellularNoiseLookupFrequency(float cellularNoiseLookupFrequency) { m_cellularNoiseLookupFrequency = cellularNoiseLookupFrequency; }
+
+
+	// Enables position perturbing for all noise types
+	// Default: None
+	void SetPerturbType(PerturbType perturbType) { m_perturbType = perturbType; }
+
+	// Sets the maximum distance the input position can be perturbed
+	// Default: 1.0
+	void SetPerturbAmp(float perturbAmp) { m_perturbAmp = perturbAmp / 511.5f; }
+
+	// Set the relative frequency for the perturb gradient
+	// Default: 0.5
+	void SetPerturbFrequency(float perturbFrequency) { m_perturbFrequency = perturbFrequency; }
+
+
+	// Sets octave count for perturb fractal types
+	// Default: 3
+	void SetPerturbFractalOctaves(int perturbOctaves) { m_perturbOctaves = perturbOctaves; m_perturbFractalBounding = CalculateFractalBounding(m_perturbOctaves, m_perturbGain); }
+
+	// Sets octave lacunarity for perturb fractal types 
+	// Default: 2.0
+	void SetPerturbFractalLacunarity(float perturbLacunarity) { m_perturbLacunarity = perturbLacunarity; }
+	
+	// Sets octave gain for perturb fractal types 
+	// Default: 0.5
+	void SetPerturbFractalGain(float perturbGain) { m_perturbGain = perturbGain; m_perturbFractalBounding = CalculateFractalBounding(m_perturbOctaves, m_perturbGain);	}
 
 	static FastNoiseVectorSet* GetVectorSet(int xSize, int ySize, int zSize);
 	static FastNoiseVectorSet* GetSamplingVectorSet(int sampleScale, int xSize, int ySize, int zSize);
@@ -216,6 +261,8 @@ public:
 	virtual void FillCellularSet(float* noiseSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) = 0;
 	virtual void FillCellularSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) = 0;
 
+	virtual ~FastNoiseSIMD() { }
+
 protected:
 	int m_seed = 1337;
 	float m_frequency = 0.01f;
@@ -228,12 +275,25 @@ protected:
 	int m_octaves = 3;
 	float m_lacunarity = 2.0f;
 	float m_gain = 0.5f;
-	FractalType m_fractalType = FBM;
+	FractalType m_fractalType = FBM;	
+	float m_fractalBounding;	
 
 	CellularDistanceFunction m_cellularDistanceFunction = Euclidean;
 	CellularReturnType m_cellularReturnType = Distance;
+	NoiseType m_cellularNoiseLookupType = Simplex;
+	float m_cellularNoiseLookupFrequency = 0.2f;
+
+	PerturbType m_perturbType = None;
+	float m_perturbAmp = 1.0f;
+	float m_perturbFrequency = 0.5f;
+
+	int m_perturbOctaves = 3;
+	float m_perturbLacunarity = 2.0f;
+	float m_perturbGain = 0.5f;
+	float m_perturbFractalBounding;
 
 	static int s_currentSIMDLevel;
+	static float CalculateFractalBounding(int octaves, float gain);
 };
 
 struct FastNoiseVectorSet
@@ -265,4 +325,6 @@ public:
 #define FN_SSE2 1
 #define FN_SSE41 2
 #define FN_AVX2 3
+#define FN_AVX512 4
+#define FN_NEON 5
 #endif
