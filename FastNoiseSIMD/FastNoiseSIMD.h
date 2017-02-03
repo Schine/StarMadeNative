@@ -32,7 +32,7 @@
 // Comment out lines to not compile for certain instruction sets
 #if defined(__arm__) || defined(__aarch64__)
 #define FN_ARM
-#define FN_IOS
+//#define FN_IOS
 #define FN_COMPILE_NEON
 #else
 
@@ -53,9 +53,9 @@
 #define FN_COMPILE_NO_SIMD_FALLBACK
 #endif
 
-// Using FMA instructions with AVX2/NEON provides a small performance increase but can cause 
+// Using FMA instructions with AVX2/NEON provides a small performance increase but can cause
 // minute variations in noise output compared to other SIMD levels due to higher calculation precision
-#ifndef __arm__
+#ifndef FN_ARM
 #define FN_USE_FMA
 #endif
 
@@ -106,7 +106,7 @@ public:
 	enum CellularDistanceFunction { Euclidean, Manhattan, Natural };
 	enum CellularReturnType { CellValue, Distance, Distance2, Distance2Add, Distance2Sub, Distance2Mul, Distance2Div, NoiseLookup };
 
-	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU 
+	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU
 	static FastNoiseSIMD* NewFastNoiseSIMD(int seed = 1337);
 
 	// Returns highest detected level of CPU support
@@ -211,11 +211,11 @@ public:
 	// Default: 3
 	void SetPerturbFractalOctaves(int perturbOctaves) { m_perturbOctaves = perturbOctaves; m_perturbFractalBounding = CalculateFractalBounding(m_perturbOctaves, m_perturbGain); }
 
-	// Sets octave lacunarity for perturb fractal types 
+	// Sets octave lacunarity for perturb fractal types
 	// Default: 2.0
 	void SetPerturbFractalLacunarity(float perturbLacunarity) { m_perturbLacunarity = perturbLacunarity; }
-	
-	// Sets octave gain for perturb fractal types 
+
+	// Sets octave gain for perturb fractal types
 	// Default: 0.5
 	void SetPerturbFractalGain(float perturbGain) { m_perturbGain = perturbGain; m_perturbFractalBounding = CalculateFractalBounding(m_perturbOctaves, m_perturbGain);	}
 
@@ -275,8 +275,8 @@ protected:
 	int m_octaves = 3;
 	float m_lacunarity = 2.0f;
 	float m_gain = 0.5f;
-	FractalType m_fractalType = FBM;	
-	float m_fractalBounding;	
+	FractalType m_fractalType = FBM;
+	float m_fractalBounding;
 
 	CellularDistanceFunction m_cellularDistanceFunction = Euclidean;
 	CellularReturnType m_cellularReturnType = Distance;
