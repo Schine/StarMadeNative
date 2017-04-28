@@ -108,6 +108,11 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 	L_2_FNP(p)->SetCellularNoiseLookupFrequency(freq);
 }
 
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetCellularDistance2Indicies(JNIEnv* jEnv, jclass, jlong p, jint cellularDistanceIndex0, jint cellularDistanceIndex1)
+{
+	L_2_FNP(p)->SetCellularDistance2Indicies(cellularDistanceIndex0, cellularDistanceIndex1);
+}
+
 JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbType(JNIEnv* jEnv, jclass, jlong p, jint perturbType)
 {
 	L_2_FNP(p)->SetPerturbType(static_cast<FastNoiseSIMD::PerturbType>(perturbType));
@@ -136,6 +141,11 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbFractalGain(JNIEnv* jEnv, jclass, jlong p, jfloat perturbFractalGain)
 {
 	L_2_FNP(p)->SetPerturbFractalGain(perturbFractalGain);
+}
+
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbNormaliseLength(JNIEnv* jEnv, jclass, jlong p, jfloat perturbNormaliseLength)
+{
+	L_2_FNP(p)->SetPerturbNormaliseLength(perturbNormaliseLength);
 }
 
 JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeFillNoiseSet(JNIEnv* jEnv, jclass, jlong p, jfloatArray noiseSet, jint xStart, jint yStart, jint zStart, jint xSize, jint ySize, jint zSize)
