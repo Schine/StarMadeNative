@@ -113,6 +113,11 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 	L_2_FNP(p)->SetCellularDistance2Indicies(cellularDistanceIndex0, cellularDistanceIndex1);
 }
 
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetCellularJitter(JNIEnv* jEnv, jclass, jlong p, jfloat jitter)
+{
+	L_2_FNP(p)->SetCellularJitter(jitter);
+}
+
 JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetPerturbType(JNIEnv* jEnv, jclass, jlong p, jint perturbType)
 {
 	L_2_FNP(p)->SetPerturbType(static_cast<FastNoiseSIMD::PerturbType>(perturbType));

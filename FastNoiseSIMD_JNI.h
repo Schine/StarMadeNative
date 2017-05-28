@@ -153,6 +153,14 @@ JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_plan
 
 /*
  * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
+ * Method:    NativeSetCellularJitter
+ * Signature: (JF)V
+ */
+JNIEXPORT void JNICALL Java_org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD_NativeSetCellularJitter
+  (JNIEnv *, jclass, jlong, jfloat);
+
+/*
+ * Class:     org_schema_game_server_controller_world_factory_planet_FastNoiseSIMD
  * Method:    NativeSetPerturbType
  * Signature: (JI)V
  */

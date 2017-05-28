@@ -29,6 +29,7 @@
 #include "FastNoiseSIMD.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <algorithm>
 #include <cstdint>
 
 #ifdef FN_COMPILE_NO_SIMD_FALLBACK
@@ -84,7 +85,7 @@ int GetFastestSIMD()
 	if (android_getCpuFamily() == ANDROID_CPU_FAMILY_ARM)
 	{
 		auto cpuFeatures = android_getCpuFeatures();
-		
+
 		if (cpuFeatures & ANDROID_CPU_ARM_FEATURE_NEON)
 #ifdef FN_USE_FMA
 			if (cpuFeatures & ANDROID_CPU_ARM_FEATURE_NEON_FMA)
@@ -170,13 +171,13 @@ int GetFastestSIMD()
 		return FN_SSE41;
 
 	// AVX512
-	bool cpuAVX512Support = (cpuInfo[1] & 1 << 16) != 0;		
+	bool cpuAVX512Support = (cpuInfo[1] & 1 << 16) != 0;
 	bool oxAVX512Support = (xgetbv(_XCR_XFEATURE_ENABLED_MASK) & 0xe6) == 0xe6;
 
 	if (!cpuAVX512Support || !oxAVX512Support)
 		return FN_AVX2;
 
-	return FN_AVX512;	
+	return FN_AVX512;
 }
 #endif
 
@@ -522,6 +523,15 @@ float FastNoiseSIMD::CalculateFractalBounding(int octaves, float gain)
 		amp *= gain;
 	}
 	return 1.0f / ampFractal;
+}
+
+void FastNoiseSIMD::SetCellularDistance2Indicies(int cellularDistanceIndex0, int cellularDistanceIndex1)
+{
+	m_cellularDistanceIndex0 = std::min(cellularDistanceIndex0, cellularDistanceIndex1);
+	m_cellularDistanceIndex1 = std::max(cellularDistanceIndex0, cellularDistanceIndex1);
+
+	m_cellularDistanceIndex0 = std::min(std::max(m_cellularDistanceIndex0, 0), FN_CELLULAR_INDEX_MAX);
+	m_cellularDistanceIndex1 = std::min(std::max(m_cellularDistanceIndex1, 0), FN_CELLULAR_INDEX_MAX);
 }
 
 void FastNoiseVectorSet::Free()

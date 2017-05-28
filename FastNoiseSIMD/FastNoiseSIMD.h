@@ -26,7 +26,7 @@
 // off every 'zix'.)
 //
 
-// VERSION: 0.5.0
+// VERSION: 0.7.0
 
 #ifndef FASTNOISE_SIMD_H
 #define FASTNOISE_SIMD_H
@@ -165,7 +165,7 @@ public:
 
 	// Sets octave count for all fractal noise types
 	// Default: 3
-	void SetFractalOctaves(int octaves) { m_octaves = octaves; m_fractalBounding = CalculateFractalBounding(m_octaves, m_gain);	}
+	void SetFractalOctaves(int octaves) { m_octaves = octaves; m_fractalBounding = CalculateFractalBounding(m_octaves, m_gain); }
 
 	// Sets octave lacunarity for all fractal noise types
 	// Default: 2.0
@@ -198,7 +198,14 @@ public:
 
 	// Sets the 2 distance indicies used for distance2 return types
 	// Default: 0, 1
-	void SetCellularDistance2Indicies(int cellularDistanceIndex0, int cellularDistanceIndex1) { m_cellularDistanceIndex0 = cellularDistanceIndex0; m_cellularDistanceIndex1 = cellularDistanceIndex1; }
+	// Note: index0 should be lower than index1
+	// Both indicies must be >= 0, index1 must be < 4
+	void SetCellularDistance2Indicies(int cellularDistanceIndex0, int cellularDistanceIndex1);
+
+	// Sets the maximum distance a cellular point can move from it's grid position
+	// Setting this high will make artifacts more common
+	// Default: 0.45
+	void SetCellularJitter(float cellularJitter) { m_cellularJitter = cellularJitter; }
 
 
 	// Enables position perturbing for all noise types
@@ -221,10 +228,10 @@ public:
 	// Sets octave lacunarity for perturb fractal types 
 	// Default: 2.0
 	void SetPerturbFractalLacunarity(float perturbLacunarity) { m_perturbLacunarity = perturbLacunarity; }
-	
+
 	// Sets octave gain for perturb fractal types 
 	// Default: 0.5
-	void SetPerturbFractalGain(float perturbGain) { m_perturbGain = perturbGain; m_perturbFractalBounding = CalculateFractalBounding(m_perturbOctaves, m_perturbGain);	}
+	void SetPerturbFractalGain(float perturbGain) { m_perturbGain = perturbGain; m_perturbFractalBounding = CalculateFractalBounding(m_perturbOctaves, m_perturbGain); }
 
 	// Sets the length for vectors after perturb normalising 
 	// Default: 1.0
@@ -272,7 +279,7 @@ public:
 	float* GetCellularSet(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f);
 	virtual void FillCellularSet(float* noiseSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) = 0;
 	virtual void FillCellularSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) = 0;
-	
+
 	float* GetCubicSet(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f);
 	float* GetCubicFractalSet(int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f);
 	virtual void FillCubicSet(float* noiseSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) = 0;
@@ -294,8 +301,8 @@ protected:
 	int m_octaves = 3;
 	float m_lacunarity = 2.0f;
 	float m_gain = 0.5f;
-	FractalType m_fractalType = FBM;	
-	float m_fractalBounding;	
+	FractalType m_fractalType = FBM;
+	float m_fractalBounding;
 
 	CellularDistanceFunction m_cellularDistanceFunction = Euclidean;
 	CellularReturnType m_cellularReturnType = Distance;
@@ -303,6 +310,7 @@ protected:
 	float m_cellularNoiseLookupFrequency = 0.2f;
 	int m_cellularDistanceIndex0 = 0;
 	int m_cellularDistanceIndex1 = 1;
+	float m_cellularJitter = 0.45f;
 
 	PerturbType m_perturbType = None;
 	float m_perturbAmp = 1.0f;
@@ -342,6 +350,8 @@ public:
 
 	void SetSize(int _size);
 };
+
+#define FN_CELLULAR_INDEX_MAX 3
 
 #define FN_NO_SIMD_FALLBACK 0
 #define FN_SSE2 1
