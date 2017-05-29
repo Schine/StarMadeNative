@@ -27,7 +27,7 @@
 //
 
 #include "FastNoiseSIMD.h"
-#include <assert.h> 
+#include <assert.h>
 
 #if defined(SIMD_LEVEL) || defined(FN_COMPILE_NO_SIMD_FALLBACK)
 
@@ -975,11 +975,11 @@ static SIMDf VECTORCALL FUNC(CubicSingle)(SIMDi seed, SIMDf x, SIMDf y, SIMDf z)
 SIMDi hash##_x##_y##_z = FUNC(HashHB)(seed, x##_x, y##_y, z##_z); \
 SIMDf x##_x##_y##_z = SIMDf_SUB(SIMDf_CONVERT_TO_FLOAT(SIMDi_AND(hash##_x##_y##_z, SIMDi_NUM(bit10Mask))), SIMDf_NUM(511_5)); \
 SIMDf y##_x##_y##_z = SIMDf_SUB(SIMDf_CONVERT_TO_FLOAT(SIMDi_AND(SIMDi_SHIFT_R(hash##_x##_y##_z, 10), SIMDi_NUM(bit10Mask))), SIMDf_NUM(511_5)); \
-SIMDf z##_x##_y##_z = SIMDf_SUB(SIMDf_CONVERT_TO_FLOAT(SIMDi_AND(SIMDi_SHIFT_R(hash##_x##_y##_z, 20), SIMDi_NUM(bit10Mask))), SIMDf_NUM(511_5)); 
+SIMDf z##_x##_y##_z = SIMDf_SUB(SIMDf_CONVERT_TO_FLOAT(SIMDi_AND(SIMDi_SHIFT_R(hash##_x##_y##_z, 20), SIMDi_NUM(bit10Mask))), SIMDf_NUM(511_5));
 
 //SIMDf invMag##_x##_y##_z = SIMDf_MUL(SIMDf_NUM(cellJitter), SIMDf_INV_SQRT(SIMDf_MUL_ADD(x##_x##_y##_z, x##_x##_y##_z, SIMDf_MUL_ADD(y##_x##_y##_z, y##_x##_y##_z, SIMDf_MUL(z##_x##_y##_z, z##_x##_y##_z)))));
 //x##_x##_y##_z = SIMDf_MUL(x##_x##_y##_z, invMag##_x##_y##_z);
-//y##_x##_y##_z = SIMDf_MUL(y##_x##_y##_z, invMag##_x##_y##_z); 
+//y##_x##_y##_z = SIMDf_MUL(y##_x##_y##_z, invMag##_x##_y##_z);
 //z##_x##_y##_z = SIMDf_MUL(z##_x##_y##_z, invMag##_x##_y##_z);
 
 static void VECTORCALL FUNC(GradientPerturbSingle)(SIMDi seed, SIMDf perturbAmp, SIMDf perturbFrequency, SIMDf& x, SIMDf& y, SIMDf& z)

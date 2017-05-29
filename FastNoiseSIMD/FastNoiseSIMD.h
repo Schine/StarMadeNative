@@ -48,7 +48,7 @@
 // Only the latest compilers will support this
 //#define FN_COMPILE_AVX512
 
-// Using FMA instructions with AVX(51)2/NEON provides a small performance increase but can cause 
+// Using FMA instructions with AVX(51)2/NEON provides a small performance increase but can cause
 // minute variations in noise output compared to other SIMD levels due to higher calculation precision
 // Intel compiler will always generate FMA instructions, use /Qfma- or -no-fma to disable
 #define FN_USE_FMA
@@ -106,7 +106,7 @@ public:
 	enum CellularDistanceFunction { Euclidean, Manhattan, Natural };
 	enum CellularReturnType { CellValue, Distance, Distance2, Distance2Add, Distance2Sub, Distance2Mul, Distance2Div, NoiseLookup, Distance2Cave };
 
-	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU 
+	// Creates new FastNoiseSIMD for the highest supported instuction set of the CPU
 	static FastNoiseSIMD* NewFastNoiseSIMD(int seed = 1337);
 
 	// Returns highest detected level of CPU support
@@ -225,15 +225,15 @@ public:
 	// Default: 3
 	void SetPerturbFractalOctaves(int perturbOctaves) { m_perturbOctaves = perturbOctaves; m_perturbFractalBounding = CalculateFractalBounding(m_perturbOctaves, m_perturbGain); }
 
-	// Sets octave lacunarity for perturb fractal types 
+	// Sets octave lacunarity for perturb fractal types
 	// Default: 2.0
 	void SetPerturbFractalLacunarity(float perturbLacunarity) { m_perturbLacunarity = perturbLacunarity; }
 
-	// Sets octave gain for perturb fractal types 
+	// Sets octave gain for perturb fractal types
 	// Default: 0.5
 	void SetPerturbFractalGain(float perturbGain) { m_perturbGain = perturbGain; m_perturbFractalBounding = CalculateFractalBounding(m_perturbOctaves, m_perturbGain); }
 
-	// Sets the length for vectors after perturb normalising 
+	// Sets the length for vectors after perturb normalising
 	// Default: 1.0
 	void SetPerturbNormaliseLength(float perturbNormaliseLength) { m_perturbNormaliseLength = perturbNormaliseLength; }
 
