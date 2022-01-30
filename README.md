@@ -28,3 +28,6 @@ JAVADIR should look like this, but it will differ depending on your operating sy
 JAVAOSDIR should look like this, again, will differ depending on operating system.<br>
 `JAVAOSDIR = /usr/lib/jvm/jdk1.8.0_321/include/linux`<br>
 However if you are not on Linux, for example you are on FreeBSD, then the `include/linux` will instead be `include/FreeBSD`<br>
+Once the compiler options in the Makefile are adapted to your system, run <br>
+`make clean && make all`
+You will then find the compiled StarMade native library in `StarMadeNative/bin/Releases/libStarMadeNative64.so`.
