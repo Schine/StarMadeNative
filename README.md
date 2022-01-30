@@ -18,3 +18,5 @@ To change the configured location in CodeBlocks navigate to 'Project -> Build Op
 
 Check the image below for the location, make sure you select "StarMadeNative" on the left side
 ![CBP JDK Settings](http://i.imgur.com/codt2kl.png)
+
+## Compiling with the Makefile
